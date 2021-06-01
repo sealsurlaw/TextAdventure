@@ -1,39 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
+using TextGame.Actions;
+using TextGame.Items;
+using TextGame.Items.InventoryItems;
 using TextGame.Rooms;
 
 namespace TextGame.Helpers
 {
     static class Commands
     {
+        /// <summary>
+        /// The action commands.
+        /// </summary>
         public enum ActionType
         {
             Drink,
+            Fill,
+            Inventory,
             Look,
             LookAt,
             Take,
-            Inventory,
+            Use,
             Null,
         }
 
-        public enum ObjectType
+        /// <summary>
+        /// The item commands.
+        /// </summary>
+        public enum ItemType
         {
             Coin,
             Fountain,
             Olive,
             Tree,
             Water,
+            Waterskin,
             Null,
         }
-
-        private static List<string> valuelessWords = new List<string>()
-        {
-            "at",
-            "around",
-            "in",
-            "the",
-            "to",
-        };
 
         public static string Prompt()
         {
@@ -44,96 +47,66 @@ namespace TextGame.Helpers
             return Console.ReadLine();
         }
 
-        public static Tuple<ActionType, ObjectType> ParseCommand(string command)
+        public static Tuple<ActionType, List<ItemType>> ParseCommand(string command)
         {
             command = command.ToLower().Trim();
             List<string> commandSplit = new List<string>(command.Split(" "));
-            RemoveValuelessWords(commandSplit);
 
             if (commandSplit.Count == 0)
             {
-                return new Tuple<ActionType, ObjectType>(ActionType.Null, ObjectType.Null);
+                return new Tuple<ActionType, List<ItemType>>(ActionType.Null, new List<ItemType>());
             }
 
             ActionType actionType = ParseAction(commandSplit[0], commandSplit.Count > 1);
-            if (actionType == ActionType.Take)
-            {
-                commandSplit.RemoveAll(word => word == "up");
-            }
-
             commandSplit.RemoveAt(0);
-            ObjectType objectType = ParseObject(commandSplit);
+            List<ItemType> itemTypes = ParseItems(commandSplit);
 
-            return new Tuple<ActionType, ObjectType>(actionType, objectType);
+            return new Tuple<ActionType, List<ItemType>>(actionType, itemTypes);
         }
 
-        public static void InterpretCommands(ActionType actionType, ObjectType objectType, Context context)
+        /// <summary>
+        /// Interpret commands.
+        /// </summary>
+        /// <param name="actionType"></param>
+        /// <param name="ItemType"></param>
+        /// <param name="context"></param>
+        public static void InterpretCommands(ActionType actionType, List<ItemType> itemTypes, Context context)
         {
-            if (actionType == ActionType.Look)
+            switch (actionType)
             {
-                Console.Clear();
-                context.Room.LookAt();
+                case ActionType.Drink:
+                    DrinkAction.Handle(itemTypes, context);
+                    break;
+                case ActionType.Fill:
+                    FillAction.Handle(itemTypes, context);
+                    break;
+                case ActionType.Inventory:
+                    InventoryAction.Handle(itemTypes, context);
+                    break;
+                case ActionType.Look:
+                    LookAction.Handle(itemTypes, context);
+                    break;
+                case ActionType.LookAt:
+                    LookAtAction.Handle(itemTypes, context);
+                    break;
+                case ActionType.Take:
+                    TakeAction.Handle(itemTypes, context);
+                    break;
+                case ActionType.Use:
+                    UseAction.Handle(itemTypes, context);
+                    break;
+                default:
+                    Console.WriteLine("I'm unable to help with that.");
+                    break;
             }
-
-            if (actionType == ActionType.LookAt)
-            {
-                if (context.Room.ContainsItem(objectType))
-                {
-                    context.Room.LookAt(objectType);
-                }
-                else if (context.Backpack.ContainsItem(objectType))
-                {
-                    context.Backpack.LookAt(objectType);
-                }
-                else
-                {
-                    Console.WriteLine("I don't see that here.");
-                }
-            }
-
-            if (actionType == ActionType.Inventory)
-            {
-                context.Backpack.ViewContents();
-            }
-
-            if (actionType == ActionType.Take)
-            {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-
-                Tuple<bool, Room.TakeReasons> successTuple = context.Room.TakeItem(objectType);
-                if (successTuple.Item1)
-                {
-                    Console.WriteLine("You add the item to your backpack.");
-                }
-                else
-                {
-                    switch (successTuple.Item2)
-                    {
-                        case Room.TakeReasons.BackpackFull:
-                            Console.WriteLine("You cannot take that. Your backpack is full.");
-                            break;
-                        case Room.TakeReasons.CannotTake:
-                            Console.WriteLine("That is not something you can take.");
-                            break;
-                        case Room.TakeReasons.NotHere:
-                            Console.WriteLine("I don't see that here.");
-                            break;
-                    }
-                }
-
-                Console.ResetColor();
-            }
-        }
-
-        private static void RemoveValuelessWords(List<string> commandSplit)
-        {
-            commandSplit.RemoveAll(word => valuelessWords.Contains(word));
         }
 
         private static ActionType ParseAction(string action, bool containsObject)
         {
             switch (action)
             {
+                case "fill":
+                    return ActionType.Fill;
                 case "drink":
                 case "slurp":
                     return ActionType.Drink;
@@ -156,11 +129,12 @@ namespace TextGame.Helpers
             }
         }
 
-        private static ObjectType ParseObject(List<string> objs)
+        private static List<ItemType> ParseItems(List<string> objs)
         {
+            List<ItemType> itemTypes = new List<ItemType>();
             if (objs.Count == 0)
             {
-                return ObjectType.Null;
+                return itemTypes;
             }
 
             foreach (string obj in objs)
@@ -169,26 +143,31 @@ namespace TextGame.Helpers
                 {
                     case "coin":
                     case "coins":
-                        return ObjectType.Coin;
+                        itemTypes.Add(ItemType.Coin);
+                        break;
                     case "fountain":
-                        return ObjectType.Fountain;
+                        itemTypes.Add(ItemType.Fountain);
+                        break;
                     case "olive":
                     case "olives":
                         if (objs.Contains("tree"))
                         {
-                            return ObjectType.Tree;
+                            itemTypes.Add(ItemType.Tree);
                         }
 
-                        return ObjectType.Olive;
+                        itemTypes.Add(ItemType.Olive);
+                        break;
                     case "tree":
                     case "trees":
-                        return ObjectType.Tree;
+                        itemTypes.Add(ItemType.Tree);
+                        break;
                     case "water":
-                        return ObjectType.Water;
+                        itemTypes.Add(ItemType.Water);
+                        break;
                 }
             }
 
-            return ObjectType.Null;
+            return itemTypes;
         }
     }
 }

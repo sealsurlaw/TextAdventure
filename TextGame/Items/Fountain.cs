@@ -8,7 +8,7 @@ namespace TextGame.Items
 
         public static readonly string DESCRIPTION = "A fountain overflowing with cool fresh water fed from an underground spring. You can see a {COIN} sparkling from beneath the clear {WATER}.";
 
-        public static readonly Commands.ObjectType OBJECT_TYPE = Commands.ObjectType.Fountain;
+        public static readonly Commands.ItemType OBJECT_TYPE = Commands.ItemType.Fountain;
 
         public Fountain()
             : base(NAME, DESCRIPTION, OBJECT_TYPE, false) { }

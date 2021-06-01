@@ -22,8 +22,8 @@ namespace TextGame.Items.InventoryItems
         /// </summary>
         public uint Quantity { get; set; }
 
-        protected InventoryItem(string name, string description, Commands.ObjectType objectType, uint itemNumber, decimal weight, uint quantity)
-            : base(name, description, objectType, true)
+        protected InventoryItem(string name, string description, Commands.ItemType itemType, uint itemNumber, decimal weight, uint quantity)
+            : base(name, description, itemType, true)
         {
             ItemNumber = itemNumber;
             Weight = weight;
@@ -45,10 +45,10 @@ namespace TextGame.Items.InventoryItems
         }
 
         /// <summary>
-        /// Use this inventory item on another.
+        /// Use this inventory item on another item.
         /// </summary>
-        /// <param name="inventoryItem">The other inventory item</param>
-        abstract public void UseOn(InventoryItem inventoryItem);
+        /// <param name="item">The other item</param>
+        abstract public void UseOn(Item item);
 
         /// <summary>
         /// Clones the inventory item.

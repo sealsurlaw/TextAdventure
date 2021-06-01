@@ -28,12 +28,12 @@ namespace TextGame.Helpers
 
                 if (c == '}')
                 {
-                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.ForegroundColor = ConsoleColor.White;
                 }
 
                 if (c == ']')
                 {
-                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.ForegroundColor = ConsoleColor.White;
                 }
             }
         }

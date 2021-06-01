@@ -9,7 +9,7 @@ namespace TextGame.Items.InventoryItems
 
         public static readonly string DESCRIPTION = "A dull, slightly rusted short sword about 2 feet long.";
 
-        public static readonly Commands.ObjectType OBJECT_TYPE = Commands.ObjectType.Null;
+        public static readonly Commands.ItemType OBJECT_TYPE = Commands.ItemType.Null;
 
         public static readonly uint ITEM_NUMBER = 1;
 
@@ -21,7 +21,7 @@ namespace TextGame.Items.InventoryItems
         public Sword(uint quantity)
             : base(NAME, DESCRIPTION, OBJECT_TYPE, ITEM_NUMBER, WEIGHT, quantity) { }
 
-        public override void UseOn(InventoryItem inventoryItem)
+        public override void UseOn(Item item)
         {
             throw new NotImplementedException();
         }

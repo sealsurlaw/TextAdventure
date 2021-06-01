@@ -25,14 +25,23 @@ namespace TextGame
         /// <summary>
         /// The contents of the backpack.
         /// </summary>
-        public Dictionary<uint, InventoryItem> Contents { get; }
+        public List<InventoryItem> Contents { get; }
 
-        private Stats stats;
+        private readonly Stats stats;
 
         public Backpack(Stats stats = null)
         {
+            Contents = new List<InventoryItem>()
+            {
+                new Waterskin(),
+            };
+
             TotalWeight = 0;
-            Contents = new Dictionary<uint, InventoryItem>();
+            foreach (InventoryItem item in Contents)
+            {
+                TotalWeight += item.Quantity * item.Weight;
+            }
+
             this.stats = stats;
         }
 
@@ -44,7 +53,7 @@ namespace TextGame
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine($"Your backpack ({TotalWeight} lbs / {MaxWeight} lbs) contains the following:");
             Console.ForegroundColor = ConsoleColor.Cyan;
-            foreach (InventoryItem inventoryItem in Contents.Values)
+            foreach (InventoryItem inventoryItem in Contents)
             {
                 string itemString = string.Format("{0, -15}", inventoryItem.Pluralize());
                 Console.WriteLine($"\t{inventoryItem.Quantity}\t{itemString}\t{inventoryItem.Quantity * inventoryItem.Weight} lbs");
@@ -66,13 +75,13 @@ namespace TextGame
                 return false;
             }
 
-            if (Contents.ContainsKey(inventoryItem.ItemNumber))
+            if (Contents.Exists(item => item.ItemNumber == inventoryItem.ItemNumber))
             {
-                Contents[inventoryItem.ItemNumber].Quantity += inventoryItem.Quantity;
+                Contents.Find(item => item.ItemNumber == inventoryItem.ItemNumber).Quantity += inventoryItem.Quantity;
             }
             else
             {
-                Contents.Add(inventoryItem.ItemNumber, inventoryItem);
+                Contents.Add(inventoryItem);
             }
 
             TotalWeight += itemTotalWeight;
@@ -82,8 +91,9 @@ namespace TextGame
 
         public bool RemoveItem(uint itemNumber, uint quantity)
         {
-            if (Contents.TryGetValue(itemNumber, out InventoryItem inventoryItem))
+            if (Contents.Exists(item => item.ItemNumber == itemNumber))
             {
+                InventoryItem inventoryItem = Contents.Find(item => item.ItemNumber == itemNumber);
                 if (inventoryItem.Quantity < quantity)
                 {
                     return false;
@@ -94,7 +104,7 @@ namespace TextGame
 
                 if (inventoryItem.Quantity == 0)
                 {
-                    Contents.Remove(itemNumber);
+                    Contents.Remove(inventoryItem);
                 }
 
                 return true;
@@ -103,39 +113,38 @@ namespace TextGame
             return false;
         }
 
-        public bool ContainsItem(Commands.ObjectType objectType)
+        /// <summary>
+        /// Checks if your backpack contains an object.
+        /// </summary>
+        /// <param name="ItemType">The object type.</param>
+        /// <returns>Whether the backpack contains the object type</returns>
+        public bool ContainsItem(Commands.ItemType ItemType)
         {
-            foreach (InventoryItem inventoryItem in Contents.Values)
-            {
-                if (inventoryItem.ObjectType == objectType)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return Contents.Exists(item => item.ItemType == ItemType);
         }
 
         /// <summary>
         /// Look at an item in the room.
         /// </summary>
         /// <param name="itemName">The item name</param>
-        public void LookAt(Commands.ObjectType objectType)
+        public void LookAt(Commands.ItemType ItemType)
         {
-            InventoryItem inventoryItem = null;
-            foreach (InventoryItem ii in Contents.Values)
-            {
-                if (ii.ObjectType == objectType)
-                {
-                    inventoryItem = ii;
-                    break;
-                }
-            }
+            InventoryItem inventoryItem = Contents.Find(item => item.ItemType == ItemType);
 
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.Write("[Backpack] ");
             Console.ResetColor();
             PrintHelper.ColorPrint(inventoryItem.Description);
+        }
+
+        /// <summary>
+        /// Gets an item from your backpack.
+        /// </summary>
+        /// <param name="ItemType">The object type</param>
+        /// <returns>The inventory item</returns>
+        public InventoryItem Get(Commands.ItemType ItemType)
+        {
+            return Contents.Find(item => item.ItemType == ItemType);
         }
     }
 }

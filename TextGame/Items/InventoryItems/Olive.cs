@@ -9,7 +9,7 @@ namespace TextGame.Items.InventoryItems
 
         public static readonly string DESCRIPTION = "A ripe olive.";
 
-        public static readonly Commands.ObjectType OBJECT_TYPE = Commands.ObjectType.Olive;
+        public static readonly Commands.ItemType OBJECT_TYPE = Commands.ItemType.Olive;
 
         public static readonly uint ITEM_NUMBER = 3;
 
@@ -21,7 +21,7 @@ namespace TextGame.Items.InventoryItems
         public Olive(uint quantity)
             : base(NAME, DESCRIPTION, OBJECT_TYPE, ITEM_NUMBER, WEIGHT, quantity) { }
 
-        public override void UseOn(InventoryItem inventoryItem)
+        public override void UseOn(Item item)
         {
             throw new NotImplementedException();
         }

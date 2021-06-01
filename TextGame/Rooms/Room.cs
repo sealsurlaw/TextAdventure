@@ -46,9 +46,9 @@ namespace TextGame.Rooms
         /// Look at an item in the room.
         /// </summary>
         /// <param name="itemName">The item name</param>
-        public void LookAt(Commands.ObjectType objectType)
+        public void LookAt(Commands.ItemType ItemType)
         {
-            Item item = ItemsInRoom.Find(item => item.ObjectType == objectType);
+            Item item = ItemsInRoom.Find(item => item.ItemType == ItemType);
             if (item == null)
             {
                 Console.WriteLine("I don't see that here.");
@@ -63,9 +63,9 @@ namespace TextGame.Rooms
         /// </summary>
         /// <param name="name">The item name</param>
         /// <returns>Whether the item was taken and the reason if failed</returns>
-        public Tuple<bool, TakeReasons> TakeItem(Commands.ObjectType objectType)
+        public Tuple<bool, TakeReasons> TakeItem(Commands.ItemType ItemType)
         {
-            Item item = ItemsInRoom.Find(item => item.ObjectType == objectType);
+            Item item = ItemsInRoom.Find(item => item.ItemType == ItemType);
             if (item == null)
             {
                 return new Tuple<bool, TakeReasons>(false, TakeReasons.NotHere);
@@ -87,9 +87,14 @@ namespace TextGame.Rooms
             return new Tuple<bool, TakeReasons>(false, TakeReasons.CannotTake);
         }
 
-        public bool ContainsItem(Commands.ObjectType objectType)
+        public bool ContainsItem(Commands.ItemType ItemType)
         {
-            return ItemsInRoom.Exists(item => item.ObjectType == objectType);
+            return ItemsInRoom.Exists(item => item.ItemType == ItemType);
+        }
+
+        public Item GetItem(Commands.ItemType ItemType)
+        {
+            return ItemsInRoom.Find(item => item.ItemType == ItemType);
         }
 
         private bool TryRemoveItem(Item item, uint quantity = 1)

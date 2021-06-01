@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using TextGame.Helpers;
 using TextGame.Rooms;
 
@@ -25,11 +26,11 @@ namespace TextGame
 
                 Console.WriteLine();
 
-                Tuple<Commands.ActionType, Commands.ObjectType> parsedCommand = Commands.ParseCommand(command);
+                Tuple<Commands.ActionType, List<Commands.ItemType>> parsedCommand = Commands.ParseCommand(command);
                 Commands.ActionType actionType = parsedCommand.Item1;
-                Commands.ObjectType objectType = parsedCommand.Item2;
+                List<Commands.ItemType> itemTypes = parsedCommand.Item2;
 
-                Commands.InterpretCommands(actionType, objectType, context);
+                Commands.InterpretCommands(actionType, itemTypes, context);
             }
         }
     }

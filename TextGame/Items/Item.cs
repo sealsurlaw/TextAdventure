@@ -15,18 +15,29 @@ namespace TextGame.Items
         /// </summary>
         public string Description { get; }
 
-        public Commands.ObjectType ObjectType { get; }
+        /// <summary>
+        /// The object type.
+        /// </summary>
+        public Commands.ItemType ItemType { get; }
 
+        /// <summary>
+        /// Whether the item is an inventory type.
+        /// </summary>
         public bool IsInventoryItem { get; }
 
-        protected Item(string name, string description, Commands.ObjectType objectType, bool isInventoryItem)
+        protected Item(string name, string description, Commands.ItemType itemType, bool isInventoryItem)
         {
             Name = name;
             Description = description;
-            ObjectType = objectType;
+            ItemType = itemType;
             IsInventoryItem = isInventoryItem;
         }
 
+        /// <summary>
+        /// Trys to get an inventory object.
+        /// </summary>
+        /// <param name="inventoryItem">The inventory item</param>
+        /// <returns>Whether the inventory item was found</returns>
         public bool TryGetInventoryItem(out InventoryItem inventoryItem)
         {
             inventoryItem = null;
