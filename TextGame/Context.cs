@@ -1,4 +1,5 @@
 ﻿using TextGame.Rooms;
+using TextGame.Rooms.Tutorial;
 
 namespace TextGame
 {
@@ -14,6 +15,8 @@ namespace TextGame
         {
             Stats = new Stats();
             Backpack = new Backpack(stats: Stats);
+            TutorialRooms tutorialRooms = new TutorialRooms(this);
+            Room = tutorialRooms.Get(typeof(Room1_1_1));
         }
     }
 }

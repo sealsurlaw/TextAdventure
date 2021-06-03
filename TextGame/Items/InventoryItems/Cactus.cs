@@ -11,7 +11,7 @@ namespace TextGame.Items.InventoryItems
 
         public static readonly Commands.ItemType OBJECT_TYPE = Commands.ItemType.Null;
 
-        public static readonly uint ITEM_NUMBER = 2;
+        public static readonly InvetoryItemNumbers ITEM_NUMBER = InvetoryItemNumbers.Cactus;
 
         public static readonly decimal WEIGHT = 0.8m;
 

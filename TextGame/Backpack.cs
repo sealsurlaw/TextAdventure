@@ -89,7 +89,7 @@ namespace TextGame
             return true;
         }
 
-        public bool RemoveItem(uint itemNumber, uint quantity)
+        public bool RemoveItem(InvetoryItemNumbers itemNumber, uint quantity)
         {
             if (Contents.Exists(item => item.ItemNumber == itemNumber))
             {

@@ -7,10 +7,10 @@ namespace TextGame.Items.InventoryItems
     /// </summary>
     abstract class InventoryItem : Item
     {
-                /// <summary>
+        /// <summary>
         /// A unique item number.
         /// </summary>
-        public uint ItemNumber { get; }
+        public InvetoryItemNumbers ItemNumber { get; }
 
         /// <summary>
         /// The item's weight in lbs.
@@ -22,7 +22,7 @@ namespace TextGame.Items.InventoryItems
         /// </summary>
         public uint Quantity { get; set; }
 
-        protected InventoryItem(string name, string description, Commands.ItemType itemType, uint itemNumber, decimal weight, uint quantity)
+        protected InventoryItem(string name, string description, Commands.ItemType itemType, InvetoryItemNumbers itemNumber, decimal weight, uint quantity)
             : base(name, description, itemType, true)
         {
             ItemNumber = itemNumber;

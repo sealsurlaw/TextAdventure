@@ -11,7 +11,7 @@ namespace TextGame.Items.InventoryItems
 
         public static readonly Commands.ItemType OBJECT_TYPE = Commands.ItemType.Waterskin;
 
-        public static readonly uint ITEM_NUMBER = 5;
+        public static readonly InvetoryItemNumbers ITEM_NUMBER = InvetoryItemNumbers.Waterskin;
 
         public static readonly decimal WEIGHT = 0.5m;
 

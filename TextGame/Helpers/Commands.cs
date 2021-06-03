@@ -16,6 +16,7 @@ namespace TextGame.Helpers
         {
             Drink,
             Fill,
+            Go,
             Inventory,
             Look,
             LookAt,
@@ -35,6 +36,16 @@ namespace TextGame.Helpers
             Tree,
             Water,
             Waterskin,
+            Northwest,
+            North,
+            Northeast,
+            East,
+            Southeast,
+            South,
+            Southwest,
+            West,
+            Up,
+            Down,
             Null,
         }
 
@@ -80,6 +91,9 @@ namespace TextGame.Helpers
                 case ActionType.Fill:
                     FillAction.Handle(itemTypes, context);
                     break;
+                case ActionType.Go:
+                    GoAction.Handle(itemTypes, context);
+                    break;
                 case ActionType.Inventory:
                     InventoryAction.Handle(itemTypes, context);
                     break;
@@ -110,6 +124,8 @@ namespace TextGame.Helpers
                 case "drink":
                 case "slurp":
                     return ActionType.Drink;
+                case "go":
+                    return ActionType.Go;
                 case "look":
                     if (containsObject)
                     {
@@ -163,6 +179,46 @@ namespace TextGame.Helpers
                         break;
                     case "water":
                         itemTypes.Add(ItemType.Water);
+                        break;
+                    case "northwest":
+                    case "nw":
+                        itemTypes.Add(ItemType.Northwest);
+                        break;
+                    case "north":
+                    case "n":
+                        itemTypes.Add(ItemType.North);
+                        break;
+                    case "northeast":
+                    case "ne":
+                        itemTypes.Add(ItemType.Northeast);
+                        break;
+                    case "east":
+                    case "e":
+                        itemTypes.Add(ItemType.East);
+                        break;
+                    case "southeast":
+                    case "se":
+                        itemTypes.Add(ItemType.Southeast);
+                        break;
+                    case "south":
+                    case "s":
+                        itemTypes.Add(ItemType.South);
+                        break;
+                    case "southwest":
+                    case "sw":
+                        itemTypes.Add(ItemType.Southwest);
+                        break;
+                    case "west":
+                    case "w":
+                        itemTypes.Add(ItemType.West);
+                        break;
+                    case "up":
+                    case "u":
+                        itemTypes.Add(ItemType.Up);
+                        break;
+                    case "down":
+                    case "d":
+                        itemTypes.Add(ItemType.Down);
                         break;
                 }
             }

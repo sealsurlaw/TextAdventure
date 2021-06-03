@@ -3,12 +3,28 @@ using System.Collections.Generic;
 using TextGame.Helpers;
 using TextGame.Items;
 using TextGame.Items.InventoryItems;
+using TextGame.Rooms.Tutorial;
 
 namespace TextGame.Rooms
 {
     abstract class Room
     {
         private readonly Context context;
+
+        public enum Directions
+        {
+            Undefined,
+            Northwest,
+            North,
+            Northeast,
+            East,
+            Southeast,
+            South,
+            Southwest,
+            West,
+            Up,
+            Down,
+        }
 
         public enum TakeReasons
         {
@@ -18,6 +34,8 @@ namespace TextGame.Rooms
             Success,
         }
 
+        public TutorialRooms TutorialRooms { get; }
+
         /// <summary>
         /// The scene of the room.
         /// </summary>
@@ -25,12 +43,111 @@ namespace TextGame.Rooms
 
         public List<Item> ItemsInRoom { get; }
 
-        public Room(string scene, List<Item> itemsInRoom, Context context = null)
+        public Dictionary<Directions, Type> Rooms { get; private set; }
+
+        public Room(
+            string scene,
+            List<Item> itemsInRoom,
+            Dictionary<Directions, Type> rooms,
+            TutorialRooms tutorialRooms,
+            Context context = null)
         {
             this.context = context;
 
+            TutorialRooms = tutorialRooms;
             Scene = scene;
             ItemsInRoom = itemsInRoom;
+            Rooms = rooms;
+        }
+
+        public bool GoTo(Directions direction)
+        {
+            Type type = Rooms.GetValueOrDefault(direction);
+            if (type == default)
+            {
+                return false;
+            }
+
+            Room room = TutorialRooms.Get(type);
+            context.Room = room;
+            context.Room.LookAt();
+            return true;
+        }
+
+        private void CreateMap()
+        {
+            List<List<Directions>> map = new List<List<Directions>>()
+            {
+                new List<Directions>() { Directions.Northwest, Directions.Undefined, Directions.North, Directions.Undefined, Directions.Northeast },
+                new List<Directions>() { Directions.West, Directions.Down, Directions.Undefined, Directions.Up, Directions.East },
+                new List<Directions>() { Directions.Southwest, Directions.Undefined, Directions.South, Directions.Undefined, Directions.Southeast },
+            };
+
+            foreach (List<Directions> row in map)
+            {
+                foreach (Directions direction in row)
+                {
+                    string symbol = string.Empty;
+                    switch (direction)
+                    {
+                        case Directions.Northwest:
+                            symbol = "NW ";
+                            break;
+                        case Directions.North:
+                            symbol = " N ";
+                            break;
+                        case Directions.Northeast:
+                            symbol = " NE";
+                            break;
+                        case Directions.East:
+                            symbol = "  E";
+                            break;
+                        case Directions.Southeast:
+                            symbol = " SE";
+                            break;
+                        case Directions.South:
+                            symbol = " S ";
+                            break;
+                        case Directions.Southwest:
+                            symbol = "SW ";
+                            break;
+                        case Directions.West:
+                            symbol = "W  ";
+                            break;
+                        case Directions.Up:
+                            symbol = " U ";
+                            break;
+                        case Directions.Down:
+                            symbol = " D ";
+                            break;
+                        case Directions.Undefined:
+                            symbol = "   ";
+                            break;
+                    }
+
+                    if (direction != Directions.Undefined && Rooms[direction] != null)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.Write(symbol);
+                        Console.ResetColor();
+                    }
+                    else if (direction == Directions.Undefined)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.Write(" - ");
+                        Console.ResetColor();
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.Write(symbol);
+                        Console.ResetColor();
+                    }
+                }
+
+                Console.WriteLine();
+                Console.WriteLine();
+            }
         }
 
         /// <summary>
@@ -38,6 +155,8 @@ namespace TextGame.Rooms
         /// </summary>
         public void LookAt()
         {
+            Console.Clear();
+            CreateMap();
             PrintHelper.ColorPrint(Scene);
             Console.WriteLine();
         }

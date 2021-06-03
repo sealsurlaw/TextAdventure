@@ -11,7 +11,7 @@ namespace TextGame.Items.InventoryItems
 
         public static readonly Commands.ItemType OBJECT_TYPE = Commands.ItemType.Coin;
 
-        public static readonly uint ITEM_NUMBER = 4;
+        public static readonly InvetoryItemNumbers ITEM_NUMBER = InvetoryItemNumbers.CopperCoin;
 
         public static readonly decimal WEIGHT = 0m;
 

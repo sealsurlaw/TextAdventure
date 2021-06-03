@@ -12,7 +12,6 @@ namespace TextGame
             Console.ResetColor();
 
             Context context = new Context();
-            context.Room = new Room1_1(context: context);
             context.Room.LookAt();
 
             string command = string.Empty;

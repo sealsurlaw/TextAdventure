@@ -11,7 +11,7 @@ namespace TextGame.Items.InventoryItems
 
         public static readonly Commands.ItemType OBJECT_TYPE = Commands.ItemType.Olive;
 
-        public static readonly uint ITEM_NUMBER = 3;
+        public static readonly InvetoryItemNumbers ITEM_NUMBER = InvetoryItemNumbers.Olive;
 
         public static readonly decimal WEIGHT = 0.1m;
 
