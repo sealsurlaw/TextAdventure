@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using TextGame.Helpers;
+﻿using System;
+using System.Collections.Generic;
 using TextGame.Items;
 using TextGame.Items.InventoryItems;
 
@@ -7,14 +7,14 @@ namespace TextGame.Actions
 {
     static class UseAction
     {
-        public static void Handle(List<Commands.ItemType> itemTypes, Context context)
+        public static void Handle(List<string> keywords, Context context)
         {
-            if (context.Backpack.ContainsItem(itemTypes[0]))
+            if (context.Backpack.ContainsItem(keywords[0]))
             {
-                InventoryItem inventoryItem = context.Backpack.Get(itemTypes[0]);
-                Item item = context.Room.GetItem(itemTypes[1]);
+                Tuple<Item, float> inventoryItem = context.Backpack.GetMostLikelyMatch(keywords);
+                Tuple<Item, float> item = context.Room.GetMostLikelyMatch(keywords);
 
-                inventoryItem.UseOn(item);
+                (inventoryItem.Item1 as InventoryItem).UseOn(item.Item1);
             }
         }
     }

@@ -6,7 +6,7 @@ namespace TextGame.Actions
 {
     static class LookAction
     {
-        public static void Handle(List<Commands.ItemType> itemTypes, Context context)
+        public static void Handle(List<string> keywords, Context context)
         {
             Console.ForegroundColor = ConsoleColor.White;
             context.Room.LookAt();

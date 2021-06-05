@@ -5,7 +5,7 @@ namespace TextGame.Actions
 {
     static class InventoryAction
     {
-        public static void Handle(List<Commands.ItemType> itemTypes, Context context)
+        public static void Handle(List<string> keywords, Context context)
         {
                 context.Backpack.ViewContents();
         }

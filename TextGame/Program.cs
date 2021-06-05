@@ -25,11 +25,11 @@ namespace TextGame
 
                 Console.WriteLine();
 
-                Tuple<Commands.ActionType, List<Commands.ItemType>> parsedCommand = Commands.ParseCommand(command);
+                Tuple<Commands.ActionType, List<string>> parsedCommand = Commands.ParseCommand(command);
                 Commands.ActionType actionType = parsedCommand.Item1;
-                List<Commands.ItemType> itemTypes = parsedCommand.Item2;
+                List<string> keywords = parsedCommand.Item2;
 
-                Commands.InterpretCommands(actionType, itemTypes, context);
+                Commands.InterpretCommands(actionType, keywords, context);
             }
         }
     }

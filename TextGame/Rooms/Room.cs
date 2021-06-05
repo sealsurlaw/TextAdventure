@@ -165,9 +165,9 @@ namespace TextGame.Rooms
         /// Look at an item in the room.
         /// </summary>
         /// <param name="itemName">The item name</param>
-        public void LookAt(Commands.ItemType ItemType)
+        public void LookAt(string keyword)
         {
-            Item item = ItemsInRoom.Find(item => item.ItemType == ItemType);
+            Item item = ItemsInRoom.Find(item => item.Name.ToLower().Contains(keyword));
             if (item == null)
             {
                 Console.WriteLine("I don't see that here.");
@@ -182,19 +182,19 @@ namespace TextGame.Rooms
         /// </summary>
         /// <param name="name">The item name</param>
         /// <returns>Whether the item was taken and the reason if failed</returns>
-        public Tuple<bool, TakeReasons> TakeItem(Commands.ItemType ItemType)
+        public Tuple<bool, TakeReasons> TakeItem(List<string> keywords)
         {
-            Item item = ItemsInRoom.Find(item => item.ItemType == ItemType);
-            if (item == null)
+            Tuple<Item, float> item = GetMostLikelyMatch(keywords);
+            if (item.Item2 == 0f)
             {
                 return new Tuple<bool, TakeReasons>(false, TakeReasons.NotHere);
             }
 
-            if (item.TryGetInventoryItem(out InventoryItem inventoryItem))
+            if (item.Item1.TryGetInventoryItem(out InventoryItem inventoryItem))
             {
                 inventoryItem = inventoryItem.Clone();
                 inventoryItem.Quantity = 1;
-                bool success = context.Backpack.AddItem(inventoryItem.Clone()) && TryRemoveItem(item);
+                bool success = context.Backpack.AddItem(inventoryItem.Clone()) && TryRemoveItem(item.Item1);
                 if (success)
                 {
                     return new Tuple<bool, TakeReasons>(true, TakeReasons.Success);
@@ -206,14 +206,39 @@ namespace TextGame.Rooms
             return new Tuple<bool, TakeReasons>(false, TakeReasons.CannotTake);
         }
 
-        public bool ContainsItem(Commands.ItemType ItemType)
+        public bool ContainsItem(string keyword)
         {
-            return ItemsInRoom.Exists(item => item.ItemType == ItemType);
+            return ItemsInRoom.Exists(item => item.Name.ToLower().Contains(keyword));
         }
 
-        public Item GetItem(Commands.ItemType ItemType)
+        public Tuple<Item, float> GetMostLikelyMatch(List<string> keywords)
         {
-            return ItemsInRoom.Find(item => item.ItemType == ItemType);
+            Tuple<Item, float> highestMatch = null;
+            foreach (Item item in ItemsInRoom)
+            {
+                List<string> nameWords = new List<string>(item.Name.ToLower().Split(" "));
+                float numberOfMatches = nameWords.FindAll(name => keywords.Contains(name)).Count;
+                float matchValue = numberOfMatches * numberOfMatches / nameWords.Count;
+
+                if (highestMatch == null)
+                {
+                    highestMatch = new Tuple<Item, float>(item, matchValue);
+                    continue;
+                }
+
+                if (highestMatch.Item2 < matchValue)
+                {
+                    highestMatch = new Tuple<Item, float>(item, matchValue);
+                    continue;
+                }
+            }
+
+            return highestMatch;
+        }
+
+        public Item GetItem(string keyword)
+        {
+            return ItemsInRoom.Find(item => item.Name.ToLower().Contains(keyword));
         }
 
         private bool TryRemoveItem(Item item, uint quantity = 1)

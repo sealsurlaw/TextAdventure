@@ -9,8 +9,6 @@ namespace TextGame.Items.InventoryItems
 
         public static readonly string DESCRIPTION = "A prickly cactus.";
 
-        public static readonly Commands.ItemType OBJECT_TYPE = Commands.ItemType.Null;
-
         public static readonly InvetoryItemNumbers ITEM_NUMBER = InvetoryItemNumbers.Cactus;
 
         public static readonly decimal WEIGHT = 0.8m;
@@ -19,7 +17,7 @@ namespace TextGame.Items.InventoryItems
             : this(1) { }
 
         public Cactus(uint quantity)
-            : base(NAME, DESCRIPTION, OBJECT_TYPE, ITEM_NUMBER, WEIGHT, quantity) { }
+            : base(NAME, DESCRIPTION, ITEM_NUMBER, WEIGHT, quantity) { }
 
         public override string Pluralize()
         {

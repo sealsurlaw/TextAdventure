@@ -9,8 +9,6 @@ namespace TextGame.Items.InventoryItems
 
         public static readonly string DESCRIPTION = "A copper coin. It's about half an inch in diameter. Most merchants would be happy to accept this.";
 
-        public static readonly Commands.ItemType OBJECT_TYPE = Commands.ItemType.Coin;
-
         public static readonly InvetoryItemNumbers ITEM_NUMBER = InvetoryItemNumbers.CopperCoin;
 
         public static readonly decimal WEIGHT = 0m;
@@ -19,7 +17,7 @@ namespace TextGame.Items.InventoryItems
             : this(1) { }
 
         public CopperCoin(uint quantity)
-            : base(NAME, DESCRIPTION, OBJECT_TYPE, ITEM_NUMBER, WEIGHT, quantity) { }
+            : base(NAME, DESCRIPTION, ITEM_NUMBER, WEIGHT, quantity) { }
 
         public override void UseOn(Item item)
         {

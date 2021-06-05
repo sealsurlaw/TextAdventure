@@ -1,25 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 using TextGame.Helpers;
+using TextGame.Items;
 
 namespace TextGame.Actions
 {
     static class LookAtAction
     {
-        public static void Handle(List<Commands.ItemType> itemTypes, Context context)
+        public static void Handle(List<string> keywords, Context context)
         {
-            if (itemTypes.Count > 0 && context.Room.ContainsItem(itemTypes[0]))
-            {
-                context.Room.LookAt(itemTypes[0]);
-            }
-            else if (itemTypes.Count > 0 && context.Backpack.ContainsItem(itemTypes[0]))
-            {
-                context.Backpack.LookAt(itemTypes[0]);
-            }
-            else
+            Tuple<Item, float> roomHighest = context.Room.GetMostLikelyMatch(keywords);
+            Tuple<Item, float> backpackHighest = context.Backpack.GetMostLikelyMatch(keywords);
+
+            if (Math.Max(roomHighest.Item2, backpackHighest.Item2) == 0f)
             {
                 Console.WriteLine("I don't see that here.");
+                return;
             }
+
+            Console.WriteLine($"{roomHighest.Item1} {roomHighest.Item2}");
+            Console.WriteLine($"{backpackHighest.Item1} {backpackHighest.Item2}");
+
+            Item highestItem = roomHighest.Item1;
+            if (backpackHighest.Item2 > roomHighest.Item2)
+            {
+                highestItem = backpackHighest.Item1;
+            }
+
+            PrintHelper.ColorPrint(highestItem.LookAt());
         }
     }
 }

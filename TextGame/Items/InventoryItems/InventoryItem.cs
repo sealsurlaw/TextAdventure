@@ -22,8 +22,8 @@ namespace TextGame.Items.InventoryItems
         /// </summary>
         public uint Quantity { get; set; }
 
-        protected InventoryItem(string name, string description, Commands.ItemType itemType, InvetoryItemNumbers itemNumber, decimal weight, uint quantity)
-            : base(name, description, itemType, true)
+        protected InventoryItem(string name, string description, InvetoryItemNumbers itemNumber, decimal weight, uint quantity)
+            : base(name, description, true)
         {
             ItemNumber = itemNumber;
             Weight = weight;

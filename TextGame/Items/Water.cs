@@ -8,9 +8,7 @@ namespace TextGame.Items
 
         public static readonly string DESCRIPTION = "Cool clean water. I can [FILL] a container with this.";
 
-        public static readonly Commands.ItemType OBJECT_TYPE = Commands.ItemType.Water;
-
         public Water()
-            : base(NAME, DESCRIPTION, OBJECT_TYPE, false) { }
+            : base(NAME, DESCRIPTION, false) { }
     }
 }

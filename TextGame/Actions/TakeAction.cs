@@ -7,9 +7,9 @@ namespace TextGame.Actions
 {
     static class TakeAction
     {
-        public static void Handle(List<Commands.ItemType> itemTypes, Context context)
+        public static void Handle(List<string> keywords, Context context)
         {
-            if (itemTypes.Count == 0)
+            if (keywords.Count == 0)
             {
                 Console.WriteLine("I don't see that here.");
                 return;
@@ -17,7 +17,7 @@ namespace TextGame.Actions
 
             Console.ForegroundColor = ConsoleColor.Yellow;
 
-            Tuple<bool, Room.TakeReasons> successTuple = context.Room.TakeItem(itemTypes[0]);
+            Tuple<bool, Room.TakeReasons> successTuple = context.Room.TakeItem(keywords);
             if (successTuple.Item1)
             {
                 Console.WriteLine("You add the item to your backpack.");

@@ -9,8 +9,6 @@ namespace TextGame.Items.InventoryItems
 
         public static readonly string DESCRIPTION = "A dull, slightly rusted short sword about 2 feet long.";
 
-        public static readonly Commands.ItemType OBJECT_TYPE = Commands.ItemType.Null;
-
         public static readonly InvetoryItemNumbers ITEM_NUMBER = InvetoryItemNumbers.Sword;
 
         public static readonly decimal WEIGHT = 2.5m;
@@ -19,7 +17,7 @@ namespace TextGame.Items.InventoryItems
             : this(1) { }
 
         public Sword(uint quantity)
-            : base(NAME, DESCRIPTION, OBJECT_TYPE, ITEM_NUMBER, WEIGHT, quantity) { }
+            : base(NAME, DESCRIPTION, ITEM_NUMBER, WEIGHT, quantity) { }
 
         public override void UseOn(Item item)
         {

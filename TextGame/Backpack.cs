@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TextGame.Helpers;
+using TextGame.Items;
 using TextGame.Items.InventoryItems;
 
 namespace TextGame
@@ -118,18 +119,18 @@ namespace TextGame
         /// </summary>
         /// <param name="ItemType">The object type.</param>
         /// <returns>Whether the backpack contains the object type</returns>
-        public bool ContainsItem(Commands.ItemType ItemType)
+        public bool ContainsItem(string keyword)
         {
-            return Contents.Exists(item => item.ItemType == ItemType);
+            return Contents.Exists(item => item.Name.Contains(keyword));
         }
 
         /// <summary>
         /// Look at an item in the room.
         /// </summary>
         /// <param name="itemName">The item name</param>
-        public void LookAt(Commands.ItemType ItemType)
+        public void LookAt(string keyword)
         {
-            InventoryItem inventoryItem = Contents.Find(item => item.ItemType == ItemType);
+            InventoryItem inventoryItem = Contents.Find(item => item.Name.ToLower().Contains(keyword));
 
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.Write("[Backpack] ");
@@ -137,14 +138,39 @@ namespace TextGame
             PrintHelper.ColorPrint(inventoryItem.Description);
         }
 
+        public Tuple<Item, float> GetMostLikelyMatch(List<string> keywords)
+        {
+            Tuple<Item, float> highestMatch = null;
+            foreach (Item item in Contents)
+            {
+                List<string> nameWords = new List<string>(item.Name.ToLower().Split(" "));
+                float numberOfMatches = nameWords.FindAll(name => keywords.Contains(name)).Count;
+                float matchValue = numberOfMatches * numberOfMatches / nameWords.Count;
+
+                if (highestMatch == null)
+                {
+                    highestMatch = new Tuple<Item, float>(item, matchValue);
+                    continue;
+                }
+
+                if (highestMatch.Item2 < matchValue)
+                {
+                    highestMatch = new Tuple<Item, float>(item, matchValue);
+                    continue;
+                }
+            }
+
+            return highestMatch;
+        }
+
         /// <summary>
         /// Gets an item from your backpack.
         /// </summary>
         /// <param name="ItemType">The object type</param>
         /// <returns>The inventory item</returns>
-        public InventoryItem Get(Commands.ItemType ItemType)
+        public InventoryItem Get(string keyword)
         {
-            return Contents.Find(item => item.ItemType == ItemType);
+            return Contents.Find(item => item.Name.ToLower().Contains(keyword));
         }
     }
 }

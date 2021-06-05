@@ -25,30 +25,6 @@ namespace TextGame.Helpers
             Null,
         }
 
-        /// <summary>
-        /// The item commands.
-        /// </summary>
-        public enum ItemType
-        {
-            Coin,
-            Fountain,
-            Olive,
-            Tree,
-            Water,
-            Waterskin,
-            Northwest,
-            North,
-            Northeast,
-            East,
-            Southeast,
-            South,
-            Southwest,
-            West,
-            Up,
-            Down,
-            Null,
-        }
-
         public static string Prompt()
         {
             Console.ForegroundColor = ConsoleColor.Green;
@@ -58,21 +34,23 @@ namespace TextGame.Helpers
             return Console.ReadLine();
         }
 
-        public static Tuple<ActionType, List<ItemType>> ParseCommand(string command)
+        public static Tuple<ActionType, List<string>> ParseCommand(string command)
         {
             command = command.ToLower().Trim();
             List<string> commandSplit = new List<string>(command.Split(" "));
 
             if (commandSplit.Count == 0)
             {
-                return new Tuple<ActionType, List<ItemType>>(ActionType.Null, new List<ItemType>());
+                return new Tuple<ActionType, List<string>>(ActionType.Null, null);
             }
 
             ActionType actionType = ParseAction(commandSplit[0], commandSplit.Count > 1);
-            commandSplit.RemoveAt(0);
-            List<ItemType> itemTypes = ParseItems(commandSplit);
+            if (actionType != ActionType.Go)
+            {
+                commandSplit.RemoveAt(0);
+            }
 
-            return new Tuple<ActionType, List<ItemType>>(actionType, itemTypes);
+            return new Tuple<ActionType, List<string>>(actionType, commandSplit);
         }
 
         /// <summary>
@@ -81,33 +59,33 @@ namespace TextGame.Helpers
         /// <param name="actionType"></param>
         /// <param name="ItemType"></param>
         /// <param name="context"></param>
-        public static void InterpretCommands(ActionType actionType, List<ItemType> itemTypes, Context context)
+        public static void InterpretCommands(ActionType actionType, List<string> keywords, Context context)
         {
             switch (actionType)
             {
                 case ActionType.Drink:
-                    DrinkAction.Handle(itemTypes, context);
+                    DrinkAction.Handle(keywords, context);
                     break;
                 case ActionType.Fill:
-                    FillAction.Handle(itemTypes, context);
+                    FillAction.Handle(keywords, context);
                     break;
                 case ActionType.Go:
-                    GoAction.Handle(itemTypes, context);
+                    GoAction.Handle(keywords, context);
                     break;
                 case ActionType.Inventory:
-                    InventoryAction.Handle(itemTypes, context);
+                    InventoryAction.Handle(keywords, context);
                     break;
                 case ActionType.Look:
-                    LookAction.Handle(itemTypes, context);
+                    LookAction.Handle(keywords, context);
                     break;
                 case ActionType.LookAt:
-                    LookAtAction.Handle(itemTypes, context);
+                    LookAtAction.Handle(keywords, context);
                     break;
                 case ActionType.Take:
-                    TakeAction.Handle(itemTypes, context);
+                    TakeAction.Handle(keywords, context);
                     break;
                 case ActionType.Use:
-                    UseAction.Handle(itemTypes, context);
+                    UseAction.Handle(keywords, context);
                     break;
                 default:
                     Console.WriteLine("I'm unable to help with that.");
@@ -125,6 +103,26 @@ namespace TextGame.Helpers
                 case "slurp":
                     return ActionType.Drink;
                 case "go":
+                case "northwest":
+                case "nw":
+                case "north":
+                case "n":
+                case "northeast":
+                case "ne":
+                case "east":
+                case "e":
+                case "southeast":
+                case "se":
+                case "south":
+                case "s":
+                case "southwest":
+                case "sw":
+                case "west":
+                case "w":
+                case "up":
+                case "u":
+                case "down":
+                case "d":
                     return ActionType.Go;
                 case "look":
                     if (containsObject)
@@ -139,91 +137,11 @@ namespace TextGame.Helpers
                 case "inventory":
                 case "backpack":
                 case "bag":
+                case "i":
                     return ActionType.Inventory;
                 default:
                     return ActionType.Null;
             }
-        }
-
-        private static List<ItemType> ParseItems(List<string> objs)
-        {
-            List<ItemType> itemTypes = new List<ItemType>();
-            if (objs.Count == 0)
-            {
-                return itemTypes;
-            }
-
-            foreach (string obj in objs)
-            {
-                switch (obj)
-                {
-                    case "coin":
-                    case "coins":
-                        itemTypes.Add(ItemType.Coin);
-                        break;
-                    case "fountain":
-                        itemTypes.Add(ItemType.Fountain);
-                        break;
-                    case "olive":
-                    case "olives":
-                        if (objs.Contains("tree"))
-                        {
-                            itemTypes.Add(ItemType.Tree);
-                        }
-
-                        itemTypes.Add(ItemType.Olive);
-                        break;
-                    case "tree":
-                    case "trees":
-                        itemTypes.Add(ItemType.Tree);
-                        break;
-                    case "water":
-                        itemTypes.Add(ItemType.Water);
-                        break;
-                    case "northwest":
-                    case "nw":
-                        itemTypes.Add(ItemType.Northwest);
-                        break;
-                    case "north":
-                    case "n":
-                        itemTypes.Add(ItemType.North);
-                        break;
-                    case "northeast":
-                    case "ne":
-                        itemTypes.Add(ItemType.Northeast);
-                        break;
-                    case "east":
-                    case "e":
-                        itemTypes.Add(ItemType.East);
-                        break;
-                    case "southeast":
-                    case "se":
-                        itemTypes.Add(ItemType.Southeast);
-                        break;
-                    case "south":
-                    case "s":
-                        itemTypes.Add(ItemType.South);
-                        break;
-                    case "southwest":
-                    case "sw":
-                        itemTypes.Add(ItemType.Southwest);
-                        break;
-                    case "west":
-                    case "w":
-                        itemTypes.Add(ItemType.West);
-                        break;
-                    case "up":
-                    case "u":
-                        itemTypes.Add(ItemType.Up);
-                        break;
-                    case "down":
-                    case "d":
-                        itemTypes.Add(ItemType.Down);
-                        break;
-                }
-            }
-
-            return itemTypes;
         }
     }
 }

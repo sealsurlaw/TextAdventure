@@ -6,51 +6,61 @@ namespace TextGame.Actions
 {
     static class GoAction
     {
-        public static void Handle(List<Commands.ItemType> itemTypes, Context context)
+        public static void Handle(List<string> keywords, Context context)
         {
-            foreach (Commands.ItemType itemType in itemTypes)
+            foreach (string keyword in keywords)
             {
                 bool found = false;
                 bool success = false;
-                switch (itemType)
+                switch (keyword)
                 {
-                    case Commands.ItemType.Northwest:
+                    case "northwest":
+                    case "nw":
                         success = context.Room.GoTo(Rooms.Room.Directions.Northwest);
                         found = true;
                         break;
-                    case Commands.ItemType.North:
+                    case "north":
+                    case "n":
                         success = context.Room.GoTo(Rooms.Room.Directions.North);
                         found = true;
                         break;
-                    case Commands.ItemType.Northeast:
+                    case "northeast":
+                    case "ne":
                         success = context.Room.GoTo(Rooms.Room.Directions.Northeast);
                         found = true;
                         break;
-                    case Commands.ItemType.East:
+                    case "east":
+                    case "e":
                         success = context.Room.GoTo(Rooms.Room.Directions.East);
                         found = true;
                         break;
-                    case Commands.ItemType.Southeast:
+                    case "southeast":
+                    case "se":
                         success = context.Room.GoTo(Rooms.Room.Directions.Southeast);
                         found = true;
                         break;
-                    case Commands.ItemType.South:
+                    case "south":
+                    case "s":
                         success = context.Room.GoTo(Rooms.Room.Directions.South);
                         found = true;
                         break;
-                    case Commands.ItemType.Southwest:
+                    case "southwest":
+                    case "sw":
                         success = context.Room.GoTo(Rooms.Room.Directions.Southwest);
                         found = true;
                         break;
-                    case Commands.ItemType.West:
+                    case "west":
+                    case "w":
                         success = context.Room.GoTo(Rooms.Room.Directions.West);
                         found = true;
                         break;
-                    case Commands.ItemType.Up:
+                    case "up":
+                    case "u":
                         success = context.Room.GoTo(Rooms.Room.Directions.Up);
                         found = true;
                         break;
-                    case Commands.ItemType.Down:
+                    case "down":
+                    case "d":
                         success = context.Room.GoTo(Rooms.Room.Directions.Down);
                         found = true;
                         break;

@@ -9,8 +9,6 @@ namespace TextGame.Items.InventoryItems
 
         public static readonly string DESCRIPTION = "A drinking container made from leather.";
 
-        public static readonly Commands.ItemType OBJECT_TYPE = Commands.ItemType.Waterskin;
-
         public static readonly InvetoryItemNumbers ITEM_NUMBER = InvetoryItemNumbers.Waterskin;
 
         public static readonly decimal WEIGHT = 0.5m;
@@ -19,14 +17,11 @@ namespace TextGame.Items.InventoryItems
             : this(1) { }
 
         public Waterskin(uint quantity)
-            : base(NAME, DESCRIPTION, OBJECT_TYPE, ITEM_NUMBER, WEIGHT, quantity) { }
+            : base(NAME, DESCRIPTION, ITEM_NUMBER, WEIGHT, quantity) { }
 
         public override void UseOn(Item item)
         {
-            if (item.ItemType == Commands.ItemType.Water)
-            {
-                Console.WriteLine("You fill your waterskin with water.");
-            }
+            // TODO
         }
 
         public override InventoryItem Clone()
