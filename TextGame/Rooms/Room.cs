@@ -220,13 +220,7 @@ namespace TextGame.Rooms
                 float numberOfMatches = nameWords.FindAll(name => keywords.Contains(name)).Count;
                 float matchValue = numberOfMatches * numberOfMatches / nameWords.Count;
 
-                if (highestMatch == null)
-                {
-                    highestMatch = new Tuple<Item, float>(item, matchValue);
-                    continue;
-                }
-
-                if (highestMatch.Item2 < matchValue)
+                if (highestMatch == null || highestMatch.Item2 < matchValue)
                 {
                     highestMatch = new Tuple<Item, float>(item, matchValue);
                     continue;

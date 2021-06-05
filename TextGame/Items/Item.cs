@@ -62,5 +62,10 @@ namespace TextGame.Items
         {
             return Description;
         }
+
+        public virtual string Drink()
+        {
+            return "You can't drink that.";
+        }
     }
 }

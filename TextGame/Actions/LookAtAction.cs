@@ -18,9 +18,6 @@ namespace TextGame.Actions
                 return;
             }
 
-            Console.WriteLine($"{roomHighest.Item1} {roomHighest.Item2}");
-            Console.WriteLine($"{backpackHighest.Item1} {backpackHighest.Item2}");
-
             Item highestItem = roomHighest.Item1;
             if (backpackHighest.Item2 > roomHighest.Item2)
             {
