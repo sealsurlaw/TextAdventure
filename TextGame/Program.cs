@@ -17,6 +17,8 @@ namespace TextGame
             string command = string.Empty;
             while (command.ToLower() != "exit")
             {
+                Processor.ProcessEvents(context);
+
                 command = Commands.Prompt();
                 if (string.IsNullOrWhiteSpace(command))
                 {

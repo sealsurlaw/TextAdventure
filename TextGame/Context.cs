@@ -1,4 +1,5 @@
-﻿using TextGame.Rooms;
+﻿using System;
+using TextGame.Rooms;
 using TextGame.Rooms.Tutorial;
 
 namespace TextGame
@@ -11,12 +12,15 @@ namespace TextGame
 
         public Room Room;
 
+        public DateTime LastCheckedForEvents;
+
         public Context()
         {
             Stats = new Stats();
             Backpack = new Backpack(stats: Stats);
             TutorialRooms tutorialRooms = new TutorialRooms(this);
             Room = tutorialRooms.Get(typeof(Room1_1_1));
+            LastCheckedForEvents = DateTime.Now;
         }
     }
 }

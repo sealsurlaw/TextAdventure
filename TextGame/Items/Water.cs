@@ -8,12 +8,13 @@ namespace TextGame.Items
 
         public static readonly string DESCRIPTION = "Cool clean water. I can [FILL] a container with this.";
 
-        public Water()
-            : base(NAME, DESCRIPTION, false) { }
+        public Water(Context context)
+            : base(NAME, DESCRIPTION, false, context) { }
 
         public override string Drink()
         {
-            return "You drink the cool refreshing water. Your parched throat feels much better.";
+            Context.Stats.SubtractFromStat(Stats.StatType.Thirst, 10);
+            return $"You drink the cool refreshing water. Your thirst is now {Context.Stats.GetStat(Stats.StatType.Thirst)}";
         }
     }
 }

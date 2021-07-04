@@ -9,15 +9,6 @@ namespace TextGame.Rooms.Tutorial
     {
         private static readonly string SCENE = "You are standing in the middle of a courtyard. An ancient {OLIVE TREE} twists up to the exposed sky. Hundreds of {OLIVES} dot the branches inviting you to [TAKE] one. There's a {FOUNTAIN} in the middle of the courtyard with sparkling clear {WATER}.";
 
-        private static readonly List<Item> INITIAL_ITEMS_IN_ROOM = new List<Item>()
-        {
-            new CopperCoin(),
-            new Fountain(),
-            new Olive(),
-            new OliveTree(),
-            new Water(),
-        };
-
         private static readonly Dictionary<Directions, Type> ROOMS = new Dictionary<Directions, Type>()
         {
             { Directions.Northwest, null },
@@ -32,7 +23,19 @@ namespace TextGame.Rooms.Tutorial
             { Directions.Down, null },
         };
 
+        private static List<Item> PopulateInitialItemsInRoom(Context context)
+        {
+            return new List<Item>()
+            {
+                new CopperCoin(),
+                new Fountain(),
+                new Olive(),
+                new OliveTree(),
+                new Water(context),
+            };
+        }
+
         public Room1_1_1(TutorialRooms tutorialRooms, Context context = null)
-            : base(SCENE, INITIAL_ITEMS_IN_ROOM, ROOMS, tutorialRooms, context: context) { }
+            : base(SCENE, PopulateInitialItemsInRoom(context), ROOMS, tutorialRooms, context: context) { }
     }
 }

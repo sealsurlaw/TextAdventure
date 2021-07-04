@@ -17,6 +17,7 @@ namespace TextGame.Helpers
             Drink,
             Fill,
             Go,
+            Stats,
             Inventory,
             Look,
             LookAt,
@@ -71,6 +72,9 @@ namespace TextGame.Helpers
                     break;
                 case ActionType.Go:
                     GoAction.Handle(keywords, context);
+                    break;
+                case ActionType.Stats:
+                    StatsAction.Handle(keywords, context);
                     break;
                 case ActionType.Inventory:
                     InventoryAction.Handle(keywords, context);
@@ -134,6 +138,8 @@ namespace TextGame.Helpers
                 case "take":
                 case "pick":
                     return ActionType.Take;
+                case "stats":
+                    return ActionType.Stats;
                 case "inventory":
                 case "backpack":
                 case "bag":

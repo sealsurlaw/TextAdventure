@@ -20,11 +20,17 @@ namespace TextGame.Items
         /// </summary>
         public bool IsInventoryItem { get; }
 
-        protected Item(string name, string description, bool isInventoryItem)
+        /// <summary>
+        /// The context.
+        /// </summary>
+        public Context Context { get; }
+
+        protected Item(string name, string description, bool isInventoryItem, Context context = null)
         {
             Name = name;
             Description = description;
             IsInventoryItem = isInventoryItem;
+            Context = context;
         }
 
         /// <summary>

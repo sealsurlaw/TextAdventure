@@ -8,6 +8,12 @@ namespace TextGame.Actions
     {
         public static void Handle(List<string> keywords, Context context)
         {
+            if (keywords.Contains("stats"))
+            {
+                context.Stats.ViewStats();
+                return;
+            }
+
             Console.ForegroundColor = ConsoleColor.White;
             context.Room.LookAt();
         }

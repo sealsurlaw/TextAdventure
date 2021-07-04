@@ -36,6 +36,16 @@ namespace TextGame.Helpers
                     Console.ForegroundColor = ConsoleColor.White;
                 }
             }
+
+            Console.ResetColor();
+        }
+
+        public static void WarningPrint(string s)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine();
+            Console.WriteLine(s);
+            Console.ResetColor();
         }
 
         private static string SplitString(string s)

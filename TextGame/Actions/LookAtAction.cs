@@ -18,13 +18,20 @@ namespace TextGame.Actions
                 return;
             }
 
+            bool isBackpack = false;
             Item highestItem = roomHighest.Item1;
             if (backpackHighest.Item2 > roomHighest.Item2)
             {
+                isBackpack = true;
                 highestItem = backpackHighest.Item1;
             }
 
-            PrintHelper.ColorPrint(highestItem.LookAt());
+            string message = highestItem.LookAt();
+            if (isBackpack)
+            {
+                message = $"{{Backpack}} {message}";
+            }
+            PrintHelper.ColorPrint(message);
         }
     }
 }

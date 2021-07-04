@@ -15,20 +15,23 @@ namespace TextGame
             Strength,
             Intelligence,
             Charisma,
+            Thirst,
         }
 
         private uint strength;
         private uint intelligence;
         private uint charisma;
+        private uint thirst;
 
         public Stats()
-            : this(10, 10, 10) { }
+            : this(10, 10, 10, 0) { }
 
-        public Stats(uint strength, uint intelligence, uint charisma)
+        public Stats(uint strength, uint intelligence, uint charisma, uint thirst)
         {
             this.strength = strength;
             this.intelligence = intelligence;
             this.charisma = charisma;
+            this.thirst = thirst;
         }
 
         /// <summary>
@@ -45,6 +48,8 @@ namespace TextGame
                     return intelligence;
                 case StatType.Charisma:
                     return charisma;
+                case StatType.Thirst:
+                    return thirst;
                 default:
                     throw new NotSupportedException();
             }
@@ -67,6 +72,9 @@ namespace TextGame
                     break;
                 case StatType.Charisma:
                     charisma = value;
+                    break;
+                case StatType.Thirst:
+                    thirst = value;
                     break;
                 default:
                     throw new NotSupportedException();
@@ -91,6 +99,9 @@ namespace TextGame
                 case StatType.Charisma:
                     charisma += value;
                     break;
+                case StatType.Thirst:
+                    thirst += value;
+                    break;
                 default:
                     throw new NotSupportedException();
             }
@@ -106,16 +117,32 @@ namespace TextGame
             switch (statType)
             {
                 case StatType.Strength:
-                    strength -= value;
+                    strength -= Math.Min(value, strength);
                     break;
                 case StatType.Intelligence:
-                    intelligence -= value;
+                    intelligence -= Math.Min(value, intelligence);
                     break;
                 case StatType.Charisma:
-                    charisma -= value;
+                    charisma -= Math.Min(value, charisma);
+                    break;
+                case StatType.Thirst:
+                    thirst -= Math.Min(value, thirst);
                     break;
                 default:
                     throw new NotSupportedException();
+            }
+        }
+
+        public void ViewStats()
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("Your stats are as follows:");
+            foreach (StatType statType in Enum.GetValues(typeof(StatType)))
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.Write($"\t{statType}: ");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine(GetStat(statType));
             }
         }
     }
